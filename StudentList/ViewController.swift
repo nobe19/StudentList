@@ -52,6 +52,19 @@ class ViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    
+    func saveData() {
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentURL = directoryURL.appendingPathComponent("students").appendingPathExtension("json")
+        let jsonEncoder = JSONEncoder()
+        let data = try? jsonEncoder.encode(students)
+        do {
+            try data?.write(to: documentURL, options: .noFileProtection)
+        } catch {
+            print("😡 ERROR: Could not save data \(error.localizedDescription)")
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowDetail" {
             let destination = segue.destination as! DetailViewController
@@ -74,6 +87,7 @@ class ViewController: UIViewController {
             tableView.insertRows(at: [newIndexPath], with: .fade)
             tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
         }
+        saveData()
     }
     
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
@@ -109,11 +123,13 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             students.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveData()
         }
     }
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let itemToMove = students[sourceIndexPath.row]
         students.remove(at: sourceIndexPath.row)
         students.insert(itemToMove, at: destinationIndexPath.row)
+        saveData()
     }
 }
