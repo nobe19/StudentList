@@ -53,6 +53,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5F4-B2-Xum">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="pP0-LD-cEt">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="iFR-yF-2Xf"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="FeE-rK-ORb">
                             <connections>
                                 <segue destination="chJ-lz-GPg" kind="presentation" identifier="AddDetail" id="J6W-ef-Pzy"/>
@@ -60,6 +65,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addBarButton" destination="FeE-rK-ORb" id="d3E-s8-0sF"/>
+                        <outlet property="editBarButton" destination="pP0-LD-cEt" id="p2P-Oe-hty"/>
                         <outlet property="tableView" destination="Oc0-Uh-tcL" id="IwR-eZ-B17"/>
                     </connections>
                 </viewController>
@@ -103,13 +110,18 @@
                                 <action selector="cancelButtonPressed:" destination="8A2-Cd-Y2I" id="KRX-iD-mgi"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="5rh-C7-Tor"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="5rh-C7-Tor">
+                            <connections>
+                                <segue destination="H9w-N6-Ya9" kind="unwind" unwindAction="unwindFromDetailWithSegue:" id="dHe-yC-JRc"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="studentTextField" destination="xIO-Fh-G2b" id="0G5-Mn-hR3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a07-Gm-1PS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="H9w-N6-Ya9" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2647.826086956522" y="75"/>
         </scene>

@@ -21,6 +21,10 @@ class DetailViewController: UIViewController {
         studentTextField.text = student
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        student = studentTextField.text!
+    }
+    
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         let isPresentingInAddMode = presentingViewController is UINavigationController
         if isPresentingInAddMode {

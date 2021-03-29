@@ -9,6 +9,10 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var editBarButton: UIBarButtonItem!
+    
+    @IBOutlet weak var addBarButton: UIBarButtonItem!
+    
     
     var students = ["Brendan Armstrong",
                     "Joe (Sanghyun) Back",
@@ -71,6 +75,20 @@ class ViewController: UIViewController {
             tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
         }
     }
+    
+    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+        if tableView.isEditing {
+            tableView.setEditing(false, animated: true)
+            editBarButton.title = "Edit"
+            addBarButton.isEnabled = true
+        } else {
+            tableView.setEditing(true, animated: true)
+            editBarButton.title = "Done"
+            addBarButton.isEnabled = false
+        }
+    }
+    
+    
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -85,5 +103,17 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         print("👊 cellForRowAt is building cell at indexPath.row \(indexPath.row) with value \(students[indexPath.row])")
         cell.textLabel?.text = students[indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            students.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let itemToMove = students[sourceIndexPath.row]
+        students.remove(at: sourceIndexPath.row)
+        students.insert(itemToMove, at: destinationIndexPath.row)
     }
 }
