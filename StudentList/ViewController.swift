@@ -47,9 +47,34 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetail" {
+            let destination = segue.destination as! DetailViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow!
+            destination.student = students[selectedIndexPath.row]
+        } else {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: selectedIndexPath, animated: true)
+            }
+        }
+    }
+    @IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
+        let source = segue.source as! DetailViewController
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            students[selectedIndexPath.row] = source.student
+            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+        } else {
+            let newIndexPath = IndexPath(row: students.count, section: 0)
+            students.append(source.student)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+            tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
+        }
+    }
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("😎 numberOfRowsInSection was just called! Returning \(students.count) as our row count")
         return students.count
